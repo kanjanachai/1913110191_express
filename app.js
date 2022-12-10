@@ -14,7 +14,7 @@ var app = express();
 
 mongoose.connect(
   "mongodb+srv://superdev:lin2357649@1913110191-lin.5grblxi.mongodb.net/restfulapi?retryWrites=true&w=majority",
-  { useNewUrlParser: true, useUnifiedTopology: true }
+  { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false }
 );
 
 app.use(logger("dev"));
