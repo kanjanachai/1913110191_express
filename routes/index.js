@@ -11,6 +11,6 @@ router.get("/", function (req, res, next) {
   });
 });
 
-router.get("/company", companyController.company);
+//router.get("/company", companyController.company);
 
 module.exports = router;
