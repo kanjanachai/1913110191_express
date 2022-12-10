@@ -7,7 +7,8 @@ const mongoose = require("mongoose");
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 ///
-var companiesRouter = require("./routes/company")
+var companiesRouter = require("./routes/company");
+var staffRouter = require("./routes/staff");
 
 var app = express();
 
@@ -26,5 +27,6 @@ app.use("/", indexRouter);
 app.use("/users", usersRouter);
 ///
 app.use("/company", companiesRouter);
+app.use("/staff", staffRouter);
 
 module.exports = app;
