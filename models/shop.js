@@ -12,10 +12,17 @@ const shopSchema = new Schema(
     // createdAt: { type: Date, default: Date.now },
     // UpdatedAt: { type: Date, default: Date.now },
   },{ 
+    toJSON: { virtuals: true },
     timestamps: true,
     collection: "shops" 
-}
-);
+});
+
+shopSchema.virtual('menus',{ 
+  ref: 'Menu',
+  localField: '_id',
+  foreignField: 'shop'
+})
+
 
 const shop = mongoose.model("Shop", shopSchema);
 
