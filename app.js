@@ -10,6 +10,9 @@ var usersRouter = require("./routes/users");
 var companiesRouter = require("./routes/company");
 var staffRouter = require("./routes/staff");
 
+///
+var shopRouter = require("./routes/shop");
+
 var app = express();
 
 mongoose.connect(
@@ -28,5 +31,8 @@ app.use("/users", usersRouter);
 ///
 app.use("/company", companiesRouter);
 app.use("/staff", staffRouter);
+
+///
+app.use("/shop", shopRouter);
 
 module.exports = app;
