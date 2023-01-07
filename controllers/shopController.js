@@ -1,7 +1,9 @@
 const Shop = require("../models/shop");
 const Menu = require("../models/menu");
 
-exports.shopmenu = async (req, res, next) => {
+const config = require('../config/index')
+
+/* exports.shopmenu = async (req, res, next) => {
   try {
     const { id } = req.params;
     const shop = await Shop.findById(id).populate("menus");
@@ -19,17 +21,17 @@ exports.shopmenu = async (req, res, next) => {
       },
     });
   }
-};
+}; */
 
-/* exports.shopmenu = async (req, res, next) => {
+exports.shopmenu = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const shop = await Shop.findOne({ _id: id });
+    const shop = await Shop.find();
     const shopWithPhotoDomain = shop.map((shop, index) => {
       return {
         id: shop.id,
         name: shop.name,
-        photo: "http://localhost:3000/images/" + shop.photo,
+        photo: config.DOMAIN + shop.photo,
         location: shop.location,
       };
     });
@@ -48,7 +50,7 @@ exports.shopmenu = async (req, res, next) => {
       },
     });
   }
-}; */
+};
 
 exports.shop = async (req, res, next) => {
   const shop = await Shop.find();
