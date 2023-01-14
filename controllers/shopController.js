@@ -43,18 +43,16 @@ exports.shopmenu = async (req, res, next) => {
     });
 
     if (!shop) {
-      throw new Error("ไม่พบผู้ใช้งาน");
+      const error = new Error("ไม่พบผู้ใช้งาน");
+      error.statusCode = 400;
+      throw error;
     } else {
       res.status(200).json({
         data: shopWithPhotoDomain,
       });
     }
   } catch (error) {
-    res.status(400).json({
-      error: {
-        message: "เกิดข้อผิดพลาด: " + error.message,
-      },
-    });
+    next(error)
   }
 };
 
