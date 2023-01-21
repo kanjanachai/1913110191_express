@@ -14,7 +14,7 @@ router.put("/:id", staffController.update);
 
 router.post("/", [
     body('name').not().isEmpty().withMessage("กรุณาป้อนชื่อสกุลด้วย"),
-    // body('photo').not().isEmpty().withMessage("กรุณาเพิ่มรูปภาพ")
+    // body('photo').not().isEmpty().withMessage("กรุณาเพิ่มรูปภาพ") ///
 ], staffController.insert);
 
 module.exports = router;

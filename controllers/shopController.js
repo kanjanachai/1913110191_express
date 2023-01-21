@@ -103,7 +103,7 @@ exports.insert = async (req, res, next) => {
   try {
     const { name, location, photo } = req.body;
 
-    /// validation
+    /// validation ///
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       const error = new Error("ข้อมูลที่ได้รับมาไม่ถูกต้อง");
