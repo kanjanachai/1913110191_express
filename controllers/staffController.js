@@ -1,23 +1,25 @@
-const fs = require('fs');
-const path = require('path');
-const uuidv4 = require('uuid');
-const { promisify } = require('util')
-const writeFileAsync = promisify(fs.writeFile)
+const fs = require("fs");
+const path = require("path");
+const uuidv4 = require("uuid");
+const { promisify } = require("util");
+const writeFileAsync = promisify(fs.writeFile);
 
 const Staff = require("../models/staff");
 
-const config = require('../config/index')
+const config = require("../config/index");
+
+const { validationResult } = require("express-validator");
 
 exports.index = async (req, res, next) => {
   const staff = await Staff.find().sort({ _id: -1 });
   const shopWithPhotoDomain = staff.map((staff, index) => {
     return {
       name: staff.name,
-      photo: config.DOMAIN + '/images/' + staff.photo,
+      photo: config.DOMAIN + "/images/" + staff.photo,
     };
   });
   res.status(200).json({
-    data: shopWithPhotoDomain
+    data: shopWithPhotoDomain,
   });
 };
 
@@ -39,22 +41,35 @@ exports.show = async (req, res, next) => {
       });
     }
   } catch (error) {
-    next(error)
+    next(error);
   }
 };
 
 exports.insert = async (req, res, next) => {
-  const { name, photo } = req.body;
+  try {
+    const { name, photo } = req.body;
 
-  let staff = new Staff({
-    name: name,
-    photo: photo &&  await saveImageToDisk(photo),
-  });
-  await staff.save(photo);
+    /// validation
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      const error = new Error("ข้อมูลที่ได้รับมาไม่ถูกต้อง");
+      error.statusCode = 422;
+      error.validation = errors.array();
+      throw error;
+    }
 
-  res.status(200).json({
-    message: "เพิ่มข้อมูลเรียบร้อยแล้ว",
-  });
+    let staff = new Staff({
+      name: name,
+      photo: photo && (await saveImageToDisk(photo)),
+    });
+    await staff.save(photo);
+
+    res.status(200).json({
+      message: "เพิ่มข้อมูลเรียบร้อยแล้ว",
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
 exports.destroy = async (req, res, next) => {
@@ -74,7 +89,7 @@ exports.destroy = async (req, res, next) => {
       });
     }
   } catch (error) {
-    next(error)
+    next(error);
   }
 };
 
@@ -92,51 +107,54 @@ exports.update = async (req, res, next) => {
     //     name: name,
     //     salary: salary
     // })
-    const staff = await Staff.findOne({ _id: id});
+    const staff = await Staff.findOne({ _id: id });
 
-    if (!staff){
+    if (!staff) {
       const error = new Error("ไม่พบผู้ใช้งาน");
       error.statusCode = 400;
       throw error;
     } else {
       await Staff.updateOne({
         name: name,
-        salary: salary
-    })
+        salary: salary,
+      });
     }
 
-    console.log(staff)
+    console.log(staff);
 
     res.status(200).json({
       message: "แก้ไขข้อมูลเรียบร้อยแล้ว",
     });
   } catch (error) {
-    next(error)
+    next(error);
   }
 };
 
 async function saveImageToDisk(baseImage) {
   //หา path จริงของโปรเจค
-  const projectPath = path.resolve('./') ;
+  const projectPath = path.resolve("./");
   //โฟลเดอร์และ path ของการอัปโหลด
   const uploadPath = `${projectPath}/public/images/`;
 
   //หานามสกุลไฟล์
-  const ext = baseImage.substring(baseImage.indexOf("/")+1, baseImage.indexOf(";base64"));
+  const ext = baseImage.substring(
+    baseImage.indexOf("/") + 1,
+    baseImage.indexOf(";base64")
+  );
 
   //สุ่มชื่อไฟล์ใหม่ พร้อมนามสกุล
-  let filename = '';
-  if (ext === 'svg+xml') {
-      filename = `${uuidv4.v4()}.svg`;
+  let filename = "";
+  if (ext === "svg+xml") {
+    filename = `${uuidv4.v4()}.svg`;
   } else {
-      filename = `${uuidv4.v4()}.${ext}`;
+    filename = `${uuidv4.v4()}.${ext}`;
   }
 
   //Extract base64 data ออกมา
   let image = decodeBase64Image(baseImage);
 
   //เขียนไฟล์ไปไว้ที่ path
-  await writeFileAsync(uploadPath+filename, image.data, 'base64');
+  await writeFileAsync(uploadPath + filename, image.data, "base64");
   //return ชื่อไฟล์ใหม่ออกไป
   return filename;
 }
@@ -145,7 +163,7 @@ function decodeBase64Image(base64Str) {
   var matches = base64Str.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
   var image = {};
   if (!matches || matches.length !== 3) {
-      throw new Error('Invalid base64 string');
+    throw new Error("Invalid base64 string");
   }
 
   image.type = matches[1];
