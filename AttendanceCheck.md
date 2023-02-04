@@ -1,1 +1,1 @@
-Kanjanachai Yaowarat (Lin): Chapter 8 - Node.js Environment with Login
+Kanjanachai Yaowarat (Lin): Chapter 9 - User Authentication
