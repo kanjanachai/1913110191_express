@@ -7,7 +7,7 @@ const companyController = require("../controllers/companyController");
 router.get("/", function (req, res, next) {
   // res.render('index', { title: 'Express' });
   res.status(200).json({
-    message: "Hello Index",
+    message: "RESTFUL API Final Class",
   });
 });
 
