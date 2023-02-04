@@ -1,9 +1,10 @@
 const User = require("../models/user");
 
-const { validationResult } = require("express-validator");
+const { validationResult, body } = require("express-validator");
 const jwt = require("jsonwebtoken")
 
-const config = require('../config/index')
+const config = require('../config/index');
+const user = require("../models/user");
 
 exports.index = (req, res, next) => {
   res.status(200).json({
@@ -106,4 +107,13 @@ exports.login = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+};
+
+exports.profile = (req, res, next) => {
+  const { role, name, email } = req.user
+  res.status(200).json({
+    name: name,
+    email: email,
+    role: role,
+  });
 };

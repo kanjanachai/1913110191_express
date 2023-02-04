@@ -2,8 +2,10 @@
 const express = require("express");
 const router = express.Router();
 const companyController = require("../controllers/companyController");
+const passportJWT = require('../middleware/passportJWT')
+const checkAdmin = require('../middleware/checkAdmin')
 
-router.get("/", companyController.company);
+router.get("/", [passportJWT.isLogin, checkAdmin.isAdmin], companyController.company);
 
 router.post("/", companyController.insert);
 
