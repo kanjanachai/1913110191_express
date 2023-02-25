@@ -18,6 +18,6 @@ schema.virtual("price_vat").get(function () {
   return this.price * 0.07 + this.price;
 });
 
-const menu = mongoose.model("Menu", schema);
+const menu = mongoose.model("Menus", schema);
 
 module.exports = menu;

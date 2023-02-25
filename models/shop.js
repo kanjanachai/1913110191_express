@@ -18,7 +18,7 @@ const shopSchema = new Schema(
 });
 
 shopSchema.virtual('menus',{ 
-  ref: 'Menu',
+  ref: 'menu',
   localField: '_id',
   foreignField: 'shop'
 })

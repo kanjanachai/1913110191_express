@@ -11,7 +11,7 @@ const config = require("../config/index");
 
 const { validationResult } = require("express-validator");
 
-/* exports.shopmenu = async (req, res, next) => {
+exports.shopmenu = async (req, res, next) => {
   try {
     const { id } = req.params;
     const shop = await Shop.findById(id).populate("menus");
@@ -29,9 +29,9 @@ const { validationResult } = require("express-validator");
       },
     });
   }
-}; */
+};
 
-exports.shopmenu = async (req, res, next) => {
+/* exports.shopmenu = async (req, res, next) => {
   try {
     const { id } = req.params;
     const shop = await Shop.find();
@@ -56,7 +56,7 @@ exports.shopmenu = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
+}; */
 
 exports.shop = async (req, res, next) => {
   const shop = await Shop.find();
@@ -74,7 +74,7 @@ exports.shop = async (req, res, next) => {
   });
 };
 
-/* exports.shop = async (req, res, next) => {
+exports.shopp = async (req, res, next) => {
   const shops = await Shop.findById().populate("Menu");
 
   const shopWithPhotoDomain = shops.map((shop, index) => {
@@ -88,7 +88,7 @@ exports.shop = async (req, res, next) => {
   res.status(200).json({
     data: shopWithPhotoDomain,
   });
-}; */
+}; 
 
 exports.menu = async (req, res, next) => {
   // const menu = await Menu.find().select('+name -price');

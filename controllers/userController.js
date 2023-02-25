@@ -6,9 +6,10 @@ const jwt = require("jsonwebtoken")
 const config = require('../config/index');
 const user = require("../models/user");
 
-exports.index = (req, res, next) => {
+exports.index = async (req, res, next) => {
+  const user = await User.find();
   res.status(200).json({
-    fullname: "Kanjanachai Yaowarat",
+    data: user,
   });
 };
 
